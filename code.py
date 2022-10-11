@@ -24,6 +24,20 @@ rotation_7 = Rotation(Ports.PORT7, False)
 # wait for rotation sensor to fully initialize
 wait(30, MSEC)
 #endregion VEXcode Generated Robot Configuration
+#robot movement calculation
+def _send_robot_commands ( self ):
+v_1, v_r = self._uni_to_diff( v, omega )
+self.robot.set_wheel_drive_rates( v_1, v_r )
+
+def _uni_to_diff( self, v, omega ):
+    #v is the translational velocity in m/s, omega is the angular velocity in rad/s
+R = self.robot_wheel_radius
+L = self.robot_wheel_base_length
+
+v_1 = ( (2.0 * v) - (omega*L) ) / (2.0 * R)
+v_r = ( (2.0 * v) + (omega*L) ) / (2.0 * R)
+return v_1, v_r
+    #response for bumper_a: move backwards and turn
 def autonomous():
     pass
     remote_control_code_enabled = False
